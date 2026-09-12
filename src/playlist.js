@@ -28,7 +28,31 @@ function getSongByNumber(num) {
   return songs[index];
 }
 
+function getNextSong(currentSong) {
+  const songs = getSongs();
+  const index = songs.indexOf(currentSong);
+
+  if (index === -1 || index >= songs.length - 1) {
+    return null;
+  }
+
+  return songs[index + 1];
+}
+
+function getPrevSong(currentSong) {
+  const songs = getSongs();
+  const index = songs.indexOf(currentSong);
+
+  if (index <= 0) {
+    return null;
+  }
+
+  return songs[index - 1];
+}
+
 module.exports = {
   getSongs,
   getSongByNumber,
+  getNextSong,
+  getPrevSong,
 };

@@ -24,6 +24,10 @@ rl.on("line", (line) => {
       console.log("  help");
       console.log("  list");
       console.log("  play <number>");
+      console.log("  pause");
+      console.log("  resume");
+      console.log("  next");
+      console.log("  prev");
       console.log("  stop");
       console.log("  current");
       console.log("  quit");
@@ -54,6 +58,88 @@ rl.on("line", (line) => {
       } else {
         player.play(song);
         console.log(`Now playing: ${song}`);
+      }
+      break;
+    }
+
+    case "pause": {
+      if (!player.getCurrentSong()) {
+        console.log("No song is currently playing.");
+      } else if (player.isPaused()) {
+        console.log("Playback is already paused.");
+      } else {
+        player.pause();
+        console.log("Playback paused.");
+      }
+      break;
+    }
+
+    case "resume": {
+      if (!player.getCurrentSong()) {
+        console.log("No song is currently playing.");
+      } else if (!player.isPaused()) {
+        console.log("Playback is not paused.");
+      } else {
+        player.resume();
+        console.log("Playback resumed.");
+      }
+      break;
+    }
+
+    case "next": {
+      const songs = playlist.getSongs();
+      if (songs.length === 0) {
+        console.log("No songs found in songs directory.");
+        break;
+      }
+
+      const currentSong = player.getCurrentSong();
+      if (!currentSong) {
+        console.log("No song is currently playing.");
+        break;
+      }
+
+      const currentIndex = songs.indexOf(currentSong);
+      if (currentIndex === -1) {
+        console.log("No song is currently playing.");
+        break;
+      }
+
+      const nextSong = playlist.getNextSong(currentSong);
+      if (!nextSong) {
+        console.log("Already at the last song.");
+      } else {
+        player.play(nextSong);
+        console.log(`Now playing: ${nextSong}`);
+      }
+      break;
+    }
+
+    case "prev": {
+      const songs = playlist.getSongs();
+      if (songs.length === 0) {
+        console.log("No songs found in songs directory.");
+        break;
+      }
+
+      const currentSong = player.getCurrentSong();
+      if (!currentSong) {
+        console.log("No song is currently playing.");
+        break;
+      }
+
+      const currentIndex = songs.indexOf(currentSong);
+      if (currentIndex === -1) {
+        console.log("No song is currently playing.");
+        break;
+      }
+
+      const prevSong = playlist.getPrevSong(currentSong);
+      if (!prevSong) {
+        console.log("Already at the first song.");
+      } else {
+        player.play(prevSong);
+        console.log(`Now playing: ${prevSong}`);
       }
       break;
     }
